@@ -105,7 +105,7 @@ export default {
       firstTime: true,
       picturePreview: null,
       results: [],
-      apiUrl: "http://localhost:5000/prediction",
+      apiUrl: "https://mlalgorithmsapi.herokuapp.com/prediction",
       width: window.innerWidth * 0.3125,
       height: window.innerHeight * 0.426,
       predictedTumor: "",
@@ -158,7 +158,6 @@ export default {
       this.firstTime = false;
       const formData = new FormData();
       formData.append("upImage", this.pictureAsFile);
-      console.log("Starting...");
       const res = await fetch(this.apiUrl, {
         method: "post",
         header: {
@@ -166,14 +165,12 @@ export default {
         },
         body: formData,
       });
-      console.log("Finished..");
       const response = await res.json();
       this.results = response;
 
       this.colorScale = scaleOrdinal()
         .domain(this.results.map((r) => r.result))
         .range(["red", "blue", "green", "yellow"]);
-      console.log(response);
 
       let data = {};
       this.results.forEach((d) => {
@@ -201,7 +198,6 @@ export default {
         return b[1] - a[1];
       });
       this.predictedTumor = pred[0][0];
-      console.log(this.predictedTumor);
     },
   },
 };
